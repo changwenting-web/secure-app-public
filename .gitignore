@@ -1,0 +1,16 @@
+*.iml
+.gradle/
+local.properties
+.idea/
+.DS_Store
+build/
+captures/
+.externalNativeBuild/
+.cxx/
+
+# 签名密钥 / 私有配置（绝不入库）
+*.keystore
+*.jks
+release.keystore
+*.pem
+*.key
