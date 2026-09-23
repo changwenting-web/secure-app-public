@@ -10,7 +10,8 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.secureapp"
+        // 公有版使用独立包名，可与私有版（com.example.secureapp）在同一设备共存
+        applicationId = "com.example.secureapp.public"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
