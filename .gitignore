@@ -12,5 +12,7 @@ captures/
 *.keystore
 *.jks
 release.keystore
+# 例外：公开密钥库（密码公开、随仓库提供，仅用于演示/不可上架）
+!app/public.keystore
 *.pem
 *.key

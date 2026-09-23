@@ -17,10 +17,19 @@ android {
         versionName = "1.0.0"
     }
 
-    // 可选：release 签名。keystore 密码从 local.properties / 环境变量读取，
-    // keystore 文件本身不入库（见 .gitignore），保证签名密钥私有。
+    // 两种 release 签名：
+    // 1) 私有密钥（可选）：根目录 release.keystore + local.properties/环境变量中的密码，
+    //    keystore 不入库，用于正式发布（存在时优先使用）。
+    // 2) 公开密钥（默认）：app/public.keystore，密码公开、随仓库提供，谁都能复现签名，
+    //    安全性等同 debug 包，不能用于上架。
     val keystoreFile = rootProject.file("release.keystore")
     signingConfigs {
+        create("public") {
+            storeFile = file("public.keystore")
+            storePassword = "public123"
+            keyAlias = "public"
+            keyPassword = "public123"
+        }
         if (keystoreFile.exists()) {
             create("release") {
                 storeFile = keystoreFile
@@ -45,8 +54,11 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            if (keystoreFile.exists()) {
-                signingConfig = signingConfigs.getByName("release")
+            // 优先用私有密钥；否则使用公开密钥，保证产出始终可直接安装
+            signingConfig = if (keystoreFile.exists()) {
+                signingConfigs.getByName("release")
+            } else {
+                signingConfigs.getByName("public")
             }
         }
     }
